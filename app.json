@@ -43,6 +43,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ddf51632-b911-4ecf-b521-d01f80981453"
+      }
+    },
+    "owner": "mrdev-software"
   }
 }
