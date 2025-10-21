@@ -1,8 +1,8 @@
-# Welcome to your Expo app 👋
+# Lancheria – Expo + Firebase
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+App de hamburgueria construído com Expo Router e Firebase (Auth, Firestore e Storage).
 
-## Get started
+## Como começar
 
 1. Install dependencies
 
@@ -16,16 +16,39 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+No output do CLI você poderá abrir em:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [Development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Emulador Android](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [Simulador iOS](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go) (limitado, não suporta react-native-firebase)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+O roteamento é baseado em arquivos via **Expo Router** dentro de `app/`.
 
-## Get a fresh project
+> Observação: react-native-firebase requer um Development Build (não funciona no Expo Go). Gere um dev client com EAS ou `expo run:[android|ios]`.
+
+### Passos de configuração do Firebase
+
+1. No [console do Firebase](https://console.firebase.google.com/), crie o projeto (ex.: `LancheriaApp`).
+2. Adicione apps Android/iOS (ex.: pacote `com.seudominio.lancheria`).
+3. Baixe os arquivos de configuração e coloque na raiz do projeto:
+   - `google-services.json` (Android)
+   - `GoogleService-Info.plist` (iOS)
+4. Ative serviços:
+   - Authentication (Google/Apple, Anônimo para "Modo Convidado")
+   - Firestore Database (modo de produção)
+   - Storage
+5. Rode um build de desenvolvimento:
+
+```bash
+npx expo prebuild
+npx expo run:android   # ou
+npx expo run:ios
+```
+
+> Dica: depois do prebuild, use EAS para gerar dev clients.
+
+## Resetar projeto exemplo
 
 When you're ready, run:
 
@@ -35,12 +58,28 @@ npm run reset-project
 
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
+## Aprenda mais
 
 To learn more about developing your project with Expo, look at the following resources:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- [Documentação Expo](https://docs.expo.dev/)
+- [Tutorial Expo](https://docs.expo.dev/tutorial/introduction/)
+
+## Estrutura e pontos principais
+
+- `config/firebaseConfig.ts`: instâncias `firebaseAuth`, `db`, `firebaseStorage`.
+- `styles/theme.ts`: design system (cores, espaçamentos, tipografia).
+- `utils/responsive.ts`: util de responsividade (`vw`, `vh`, `fontScale`).
+- `app/(tabs)/*`: abas Início, Busca, Pedidos e Perfil.
+
+## Próximos passos (roadmap)
+
+- Onboarding + Modo Convidado (Auth anônimo)
+- Login Social (Google/Apple) com Firebase Auth
+- Cardápio do Firestore + imagens no Storage
+- Personalização de produto com preço dinâmico
+- Checkout e Pedidos com atualização em tempo real
+- Notificações push (FCM)
 
 ## Join the community
 
