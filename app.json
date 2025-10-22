@@ -37,11 +37,13 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "package": "com.davidreis.lancheria"
     },
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "bundleIdentifier": "com.davidreis.lancheria"
     },
     "experiments": {
       "typedRoutes": true,
@@ -49,6 +51,11 @@
     },
     "extra": {
       "router": {},
+      "googleAuth": {
+        "androidClientId": "",
+        "iosClientId": "",
+        "webClientId": ""
+      },
       "eas": {
         "projectId": "ddf51632-b911-4ecf-b521-d01f80981453"
       }
