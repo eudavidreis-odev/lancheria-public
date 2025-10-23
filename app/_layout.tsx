@@ -28,27 +28,20 @@ export default function RootLayout() {
 }
 
 function RootNavigator() {
-  const { user, initializing } = useAuth();
+  const { initializing } = useAuth();
 
   // Pode-se mostrar um splash/loader aqui enquanto inicializa
   if (initializing) return null;
 
-  if (!user) {
-    // Sem usuário: exibe somente a tela de login como modal de tela cheia
-    return (
-      <Stack>
-        <Stack.Screen
-          name="auth/login"
-          options={{ headerShown: false, presentation: 'fullScreenModal' }}
-        />
-      </Stack>
-    );
-  }
-
-  // Autenticado: exibe Tabs e demais rotas
+  // Exibe sempre as Tabs; telas internas decidem layout com base em user
   return (
     <Stack>
       <Stack.Screen name="tabs" options={{ headerShown: false }} />
+      {/* Rota de login permanece disponível para uso opcional como modal */}
+      <Stack.Screen
+        name="auth/login"
+        options={{ headerShown: false, presentation: 'modal' }}
+      />
       <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
     </Stack>
   );

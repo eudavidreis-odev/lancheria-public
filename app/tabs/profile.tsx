@@ -1,3 +1,4 @@
+import LoginScreen from '@/app/auth/login';
 import { useAuth } from '@/contexts/AuthContext';
 import { Image, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
@@ -5,8 +6,8 @@ import { Button } from 'react-native-paper';
 export default function ProfileScreen() {
     const { user, signOut } = useAuth();
 
-    // Sem user: como as Tabs ficam ocultas nesse estado, não renderiza nada aqui
-    if (!user) return null;
+    // Sem user: renderiza a tela de Login dentro da aba Perfil
+    if (!user) return <LoginScreen />;
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 }}>
