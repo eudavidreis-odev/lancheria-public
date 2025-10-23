@@ -83,8 +83,8 @@ export const darkTheme: typeof lightTheme = {
         text: palette.white,
         mutedText: palette.gray400,
         border: palette.gray800,
-        primary: palette.primary,
-        secondary: palette.secondary,
+        primary: palette.primaryDark,
+        secondary: palette.secondaryDark,
     },
 };
 
