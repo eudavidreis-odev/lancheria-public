@@ -52,9 +52,9 @@
     "extra": {
       "router": {},
       "googleAuth": {
-        "androidClientId": "",
+        "androidClientId": "797932699843-d1m9qvrrhbir1ld6di3gcbkuo21iu3ne.apps.googleusercontent.com",
         "iosClientId": "",
-        "webClientId": ""
+        "webClientId": "937686871887-68c9c6tplg6s31c3dplgonmbukc6ja7m.apps.googleusercontent.com"
       },
       "eas": {
         "projectId": "ddf51632-b911-4ecf-b521-d01f80981453"

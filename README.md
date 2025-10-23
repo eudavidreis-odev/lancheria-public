@@ -70,7 +70,7 @@ To learn more about developing your project with Expo, look at the following res
 - `config/firebaseConfig.ts`: instâncias `firebaseAuth`, `db`, `firebaseStorage`.
 - `styles/theme.ts`: design system (cores, espaçamentos, tipografia).
 - `utils/responsive.ts`: util de responsividade (`vw`, `vh`, `fontScale`).
-- `app/(tabs)/*`: abas Início, Busca, Pedidos e Perfil.
+- `app/tabs/*`: abas Início, Busca, Pedidos e Perfil.
 
 ## Próximos passos (roadmap)
 
