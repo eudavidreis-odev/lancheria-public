@@ -1,6 +1,6 @@
-import { db } from '@/config/firebaseConfig';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import { getAuthInstance, getFirestore, isRNFirebaseAvailable, serverTimestamp } from '@/config/firebaseConfig';
+import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import Constants from 'expo-constants';
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 export type AppUser = FirebaseAuthTypes.User | null;
@@ -20,7 +20,8 @@ export const useAuth = () => {
 };
 
 async function ensureUserDocument(user: FirebaseAuthTypes.User) {
-    const ref = db.collection('users').doc(user.uid);
+    const fs = getFirestore();
+    const ref = fs.collection('users').doc(user.uid);
     await ref.set(
         {
             uid: user.uid,
@@ -28,8 +29,8 @@ async function ensureUserDocument(user: FirebaseAuthTypes.User) {
             displayName: user.displayName ?? null,
             photoURL: user.photoURL ?? null,
             provider: user.providerData?.[0]?.providerId ?? null,
-            updatedAt: firestore.FieldValue.serverTimestamp(),
-            createdAt: firestore.FieldValue.serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            createdAt: serverTimestamp(),
         },
         { merge: true }
     );
@@ -40,7 +41,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [initializing, setInitializing] = useState(true);
 
     useEffect(() => {
-        const unsubscribe = auth().onAuthStateChanged(async (u) => {
+        // Se RNFirebase não estiver disponível (Expo Go), não tenta inicializar
+        if (!isRNFirebaseAvailable() || Constants.appOwnership === 'expo') {
+            setInitializing(false);
+            return () => { };
+        }
+
+        const unsubscribe = getAuthInstance().onAuthStateChanged(async (u) => {
             setUser(u);
             if (u) {
                 try {
@@ -58,7 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         () => ({
             user,
             initializing,
-            signOut: () => auth().signOut(),
+            signOut: () => (isRNFirebaseAvailable() ? getAuthInstance().signOut() : Promise.resolve()),
         }),
         [user, initializing]
     );

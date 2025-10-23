@@ -1,11 +1,12 @@
+import { getAuth, isRNFirebaseAvailable } from '@/config/firebaseConfig';
 import { useAuth } from '@/contexts/AuthContext';
-import auth from '@react-native-firebase/auth';
 import { makeRedirectUri } from 'expo-auth-session';
 import * as Google from 'expo-auth-session/providers/google';
 import Constants from 'expo-constants';
 import * as WebBrowser from 'expo-web-browser';
 import { useEffect } from 'react';
-import { Button, Image, Text, View } from 'react-native';
+import { Alert, Image, Text, View } from 'react-native';
+import { Button } from 'react-native-paper';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -26,8 +27,13 @@ export default function ProfileScreen() {
             if (response?.type === 'success') {
                 const idToken = (response.params as any).id_token as string | undefined;
                 if (!idToken) return;
-                const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-                await auth().signInWithCredential(googleCredential);
+                if (!isRNFirebaseAvailable() || Constants.appOwnership === 'expo') {
+                    Alert.alert('Requer Development Build', 'Login com Google requer um Development Build (não funciona no Expo Go).');
+                    return;
+                }
+                const RNAuth = getAuth();
+                const googleCredential = RNAuth.GoogleAuthProvider.credential(idToken);
+                await RNAuth().signInWithCredential(googleCredential);
             }
         };
         signInWithGoogle();
@@ -42,12 +48,16 @@ export default function ProfileScreen() {
                     ) : null}
                     <Text style={{ fontSize: 18, fontWeight: '600' }}>{user.displayName || 'Usuário'}</Text>
                     {user.email ? <Text>{user.email}</Text> : null}
-                    <Button title="Sair" onPress={() => signOut()} />
+                    <Button mode="outlined" onPress={() => signOut()}>
+                        Sair
+                    </Button>
                 </>
             ) : (
                 <>
                     <Text style={{ fontSize: 16 }}>Faça login para personalizar sua experiência</Text>
-                    <Button title="Entrar com Google" disabled={!request} onPress={() => promptAsync()} />
+                    <Button mode="contained" disabled={!request} onPress={() => promptAsync()}>
+                        Entrar com Google
+                    </Button>
                 </>
             )}
         </View>

@@ -38,12 +38,12 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "googleServicesFile": "./google-services.json",
-      "package": "com.davidreis.lancheria"
+      "package": "com.mrdev.lancheria"
     },
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "com.davidreis.lancheria"
+      "bundleIdentifier": "com.mrdev.lancheria"
     },
     "experiments": {
       "typedRoutes": true,
