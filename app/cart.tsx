@@ -2,7 +2,7 @@ import { useCart } from '@/contexts/CartContext';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { View } from 'react-native';
+import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Card, Text, useTheme } from 'react-native-paper';
 
 export default function CartScreen() {
@@ -24,9 +24,14 @@ export default function CartScreen() {
                             <Text style={{ opacity: 0.6 }}>Sem imagem</Text>
                         </View>
                     )}
-                    <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1, minWidth: 0 }}>
                         <Text variant="titleMedium" style={{ fontWeight: '600' }}>{item.name}</Text>
                         <Text variant="bodySmall" style={{ opacity: 0.8 }}>Qtd: {item.quantity}</Text>
+                        {!!item.observations && (
+                            <Text variant="bodySmall" style={{ opacity: 0.7, marginTop: 4 }}>
+                                Obs.: {item.observations}
+                            </Text>
+                        )}
                         <Text variant="titleSmall" style={{ marginTop: 4 }}>
                             {(item.price * item.quantity).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                         </Text>
@@ -42,38 +47,41 @@ export default function CartScreen() {
     };
 
     return (
-        <View style={{ flex: 1, padding: 16 }}>
-            <Text variant="headlineSmall" style={{ marginBottom: 12, fontWeight: '700' }}>Carrinho</Text>
+        <SafeAreaView style={{ flex: 1 }}>
+            <View style={{ flex: 1, padding: 16 }}>
+                <Text variant="headlineSmall" style={{ marginBottom: 12, fontWeight: '700' }}>Carrinho de compras</Text>
 
-            <View style={{ flex: 1 }}>
-                {items.length === 0 ? (
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ opacity: 0.8 }}>Seu carrinho está vazio.</Text>
-                    </View>
-                ) : (
-                    <View>
-                        {items.map(renderItem)}
-                    </View>
-                )}
+                <View style={{ flex: 1 }}>
+                    {items.length === 0 ? (
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ opacity: 0.8 }}>Seu carrinho está vazio.</Text>
+                        </View>
+                    ) : (
+                        <ScrollView contentContainerStyle={{ paddingBottom: 16 }}>
+                            {items.map(renderItem)}
+                        </ScrollView>
+                    )}
+                </View>
+
+                <Card>
+                    <Card.Content style={{ gap: 12 }}>
+                        <Text variant="titleMedium">Total</Text>
+                        <Text variant="headlineSmall">{total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
+                        {/* Ações empilhadas para evitar quebra em telas pequenas */}
+                        <View style={{ gap: 8 }}>
+                            <Button mode="contained" onPress={() => { /* Placeholder para checkout */ }} style={{ width: '100%' }}>
+                                Finalizar compra
+                            </Button>
+                            <Button mode="outlined" onPress={() => router.back()} style={{ width: '100%' }}>
+                                Continuar comprando
+                            </Button>
+                            <Button mode="text" onPress={clear} style={{ width: '100%' }}>
+                                Limpar carrinho
+                            </Button>
+                        </View>
+                    </Card.Content>
+                </Card>
             </View>
-
-            <Card>
-                <Card.Content style={{ gap: 12 }}>
-                    <Text variant="titleMedium">Total</Text>
-                    <Text variant="headlineSmall">{total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
-                    <View style={{ flexDirection: 'row', gap: 12 }}>
-                        <Button mode="outlined" onPress={() => router.back()}>
-                            Continuar comprando
-                        </Button>
-                        <Button mode="contained" onPress={() => {/* Placeholder para checkout */ }}>
-                            Finalizar compra
-                        </Button>
-                        <Button mode="text" onPress={clear}>
-                            Limpar carrinho
-                        </Button>
-                    </View>
-                </Card.Content>
-            </Card>
-        </View>
+        </SafeAreaView>
     );
 }

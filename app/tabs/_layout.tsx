@@ -38,10 +38,15 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="magnifyingglass" color={color} />,
         }}
       />
+      {/* Hide legacy orders route if present */}
       <Tabs.Screen
         name="orders"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="cart"
         options={{
-          title: 'Pedidos',
+          title: 'Carrinho de compras',
           tabBarIcon: ({ color }) => withBadge(<IconSymbol size={28} name="cart.fill" color={color} />),
         }}
       />

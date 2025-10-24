@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { CartProvider } from '@/contexts/CartContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { paperDarkTheme, paperLightTheme } from '@/styles/paperTheme';
+import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 export const unstable_settings = {

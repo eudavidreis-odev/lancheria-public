@@ -70,7 +70,13 @@ To learn more about developing your project with Expo, look at the following res
 - `config/firebaseConfig.ts`: instâncias `firebaseAuth`, `db`, `firebaseStorage`.
 - `styles/theme.ts`: design system (cores, espaçamentos, tipografia).
 - `utils/responsive.ts`: util de responsividade (`vw`, `vh`, `fontScale`).
-- `app/tabs/*`: abas Início, Busca, Pedidos e Perfil.
+- `app/tabs/*`: abas Busca, Carrinho de compras e Perfil.
+
+## Diretrizes de idioma
+
+- Itens exibidos no app (textos de UI, rótulos, títulos, mensagens) devem estar sempre em PT-BR.
+- Criação de arquivos (nomes de arquivos, nomes de funções/classes) e criação de itens no banco de dados (nomes de coleções, campos, chaves) devem ser em inglês.
+- Toda a documentação do projeto (README, guias, comentários de documentação) deve ser feita em PT-BR.
 
 ## Próximos passos (roadmap)
 
