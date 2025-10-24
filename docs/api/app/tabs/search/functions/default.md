@@ -8,7 +8,7 @@
 
 > **default**(): `Element`
 
-Defined in: [app/tabs/search.tsx:22](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/app/tabs/search.tsx#L22)
+Defined in: [app/tabs/search.tsx:23](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/app/tabs/search.tsx#L23)
 
 Componente da tela de busca. Fornece pesquisa por nome e renderização por seção.
 

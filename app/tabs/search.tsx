@@ -4,6 +4,7 @@
  * produtos do Firestore quando disponível.
  */
 import { isRNFirebaseAvailable } from '@/config/firebaseConfig';
+import { useCart } from '@/contexts/CartContext';
 import { Product, subscribeProducts } from '@/services/products';
 import { layout } from '@/styles/layout';
 import Constants from 'expo-constants';
@@ -11,7 +12,7 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { SectionList, View } from 'react-native';
-import { ActivityIndicator, Card, Text, TextInput, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Badge, Card, IconButton, Text, TextInput, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type ProductItem = Product;
@@ -23,6 +24,7 @@ export default function SearchScreen() {
     const router = useRouter();
     const theme = useTheme();
     const insets = useSafeAreaInsets();
+    const { items } = useCart();
     const [products, setProducts] = React.useState<ProductItem[]>([]);
     const [loading, setLoading] = React.useState(true);
     // Cache em memória para evitar renders desnecessários
@@ -136,8 +138,27 @@ export default function SearchScreen() {
         return list;
     }, [filtered, deriveCategory]);
 
+    const totalItems = React.useMemo(() => items.reduce((sum, i) => sum + i.quantity, 0), [items]);
+
     return (
         <View style={{ flex: 1, paddingHorizontal: layout.searchPadding, paddingBottom: layout.searchPadding, paddingTop: insets.top + layout.searchPadding }}>
+            {totalItems > 0 && (
+                <View style={{ position: 'absolute', top: insets.top + 96, right: 16, zIndex: 10 }}>
+                    <View style={{ position: 'relative' }}>
+                        <IconButton
+                            icon="cart"
+                            size={28}
+                            mode="contained"
+                            onPress={() => router.push('/tabs/cart')}
+                            accessibilityLabel="Abrir carrinho"
+                            style={{ elevation: 6, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 6, shadowOffset: { width: 0, height: 4 } }}
+                        />
+                        <Badge style={{ position: 'absolute', top: -4, right: -4 }} size={18}>
+                            {totalItems}
+                        </Badge>
+                    </View>
+                </View>
+            )}
             {/* Campo de busca por nome */}
             <TextInput
                 mode="outlined"

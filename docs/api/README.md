@@ -14,7 +14,6 @@
 - [app/profile/orders](app/profile/orders/README.md)
 - [app/tabs/\_layout](app/tabs/_layout/README.md)
 - [app/tabs/cart](app/tabs/cart/README.md)
-- [app/tabs/orders](app/tabs/orders/README.md)
 - [app/tabs/profile](app/tabs/profile/README.md)
 - [app/tabs/search](app/tabs/search/README.md)
 - [components/external-link](components/external-link/README.md)
