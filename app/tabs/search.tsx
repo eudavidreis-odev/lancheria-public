@@ -1,5 +1,6 @@
 import { isRNFirebaseAvailable } from '@/config/firebaseConfig';
 import { Product, subscribeProducts } from '@/services/products';
+import { layout } from '@/styles/layout';
 import Constants from 'expo-constants';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
@@ -30,8 +31,8 @@ export default function SearchScreen() {
             ? { uri: `data:${item.imageMime};base64,${item.imageBase64}` }
             : undefined;
         return (
-            <Card mode="elevated" style={{ marginBottom: 12 }} onPress={() => router.push({ pathname: '/product/[id]', params: { id: item.id } })}>
-                <Card.Content style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+            <Card mode="elevated" style={{ marginBottom: layout.gapMd }} onPress={() => router.push({ pathname: '/product/[id]', params: { id: item.id } })}>
+                <Card.Content style={{ flexDirection: 'row', gap: layout.gapMd, alignItems: 'center' }}>
                     {src ? (
                         <Image
                             source={src as any}
@@ -81,7 +82,7 @@ export default function SearchScreen() {
     }, [filtered, deriveCategory]);
 
     return (
-        <View style={{ flex: 1, paddingHorizontal: 16, paddingBottom: 16, paddingTop: insets.top + 16 }}>
+        <View style={{ flex: 1, paddingHorizontal: layout.searchPadding, paddingBottom: layout.searchPadding, paddingTop: insets.top + layout.searchPadding }}>
             {/* Campo de busca por nome */}
             <TextInput
                 mode="outlined"
@@ -89,7 +90,7 @@ export default function SearchScreen() {
                 left={<TextInput.Icon icon="magnify" />}
                 value={query}
                 onChangeText={setQuery}
-                style={{ marginBottom: 12 }}
+                style={{ marginBottom: layout.gapMd }}
             />
             {/* Botão de salvar imagens removido */}
 
@@ -105,12 +106,12 @@ export default function SearchScreen() {
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => renderItem({ item })}
                     renderSectionHeader={({ section }) => (
-                        <Text variant="titleMedium" style={{ marginTop: 12, marginBottom: 6, fontWeight: '700' }}>
+                        <Text variant="titleMedium" style={{ marginTop: layout.gapMd, marginBottom: 6, fontWeight: '700' }}>
                             {section.title}
                         </Text>
                     )}
                     stickySectionHeadersEnabled={false}
-                    contentContainerStyle={{ paddingBottom: 16 }}
+                    contentContainerStyle={{ paddingBottom: layout.gapLg }}
                     ListEmptyComponent={
                         <View style={{ flex: 1, alignItems: 'center', marginTop: 48 }}>
                             <Text style={{ opacity: 0.8 }}>Nenhum produto cadastrado.</Text>

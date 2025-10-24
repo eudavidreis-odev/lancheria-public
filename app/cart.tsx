@@ -1,4 +1,5 @@
 import { useCart } from '@/contexts/CartContext';
+import { layout } from '@/styles/layout';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -15,8 +16,8 @@ export default function CartScreen() {
             ? { uri: `data:${item.imageMime};base64,${item.imageBase64}` }
             : undefined;
         return (
-            <Card key={item.productId} style={{ marginBottom: 12 }}>
-                <Card.Content style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+            <Card key={item.productId} style={{ marginBottom: layout.gapMd }}>
+                <Card.Content style={{ flexDirection: 'row', gap: layout.gapMd, alignItems: 'center' }}>
                     {src ? (
                         <Image source={src as any} style={{ width: 64, height: 64, borderRadius: 8, backgroundColor: theme.colors.surfaceVariant }} />
                     ) : (
@@ -48,7 +49,7 @@ export default function CartScreen() {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={{ flex: 1, padding: 16 }}>
+            <View style={{ flex: 1, padding: layout.screenPadding }}>
                 <Text variant="headlineSmall" style={{ marginBottom: 12, fontWeight: '700' }}>Carrinho de compras</Text>
 
                 <View style={{ flex: 1 }}>
@@ -57,18 +58,18 @@ export default function CartScreen() {
                             <Text style={{ opacity: 0.8 }}>Seu carrinho está vazio.</Text>
                         </View>
                     ) : (
-                        <ScrollView contentContainerStyle={{ paddingBottom: 16 }}>
+                        <ScrollView contentContainerStyle={{ paddingBottom: layout.gapLg }}>
                             {items.map(renderItem)}
                         </ScrollView>
                     )}
                 </View>
 
                 <Card>
-                    <Card.Content style={{ gap: 12 }}>
+                    <Card.Content style={{ gap: layout.gapMd }}>
                         <Text variant="titleMedium">Total</Text>
                         <Text variant="headlineSmall">{total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
                         {/* Ações empilhadas para evitar quebra em telas pequenas */}
-                        <View style={{ gap: 8 }}>
+                        <View style={{ gap: layout.gapSm }}>
                             <Button mode="contained" onPress={() => { /* Placeholder para checkout */ }} style={{ width: '100%' }}>
                                 Finalizar compra
                             </Button>
