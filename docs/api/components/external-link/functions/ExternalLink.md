@@ -16,7 +16,7 @@ Link especial que previne o comportamento padrão no mobile e abre via `WebBrows
 
 ### \_\_namedParameters
 
-`Props`
+[`Props`](../type-aliases/Props.md)
 
 ## Returns
 

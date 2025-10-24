@@ -9,7 +9,6 @@
 - [app](app/README.md)
 - [app/\_layout](app/_layout/README.md)
 - [app/auth/login](app/auth/login/README.md)
-- [app/cart](app/cart/README.md)
 - [app/modal](app/modal/README.md)
 - [app/product/\[id\]](app/product/[id]/README.md)
 - [app/profile/orders](app/profile/orders/README.md)

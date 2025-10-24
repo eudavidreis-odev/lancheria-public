@@ -15,6 +15,7 @@ import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 export const unstable_settings = {
+  // Mantemos "tabs" para evitar parênteses no caminho do sistema
   anchor: 'tabs',
 };
 

@@ -9,6 +9,10 @@
 Componente `ExternalLink` que abre URLs externas em um navegador in-app em
 plataformas nativas, ou usa o comportamento padrão no web.
 
+## Type Aliases
+
+- [Props](type-aliases/Props.md)
+
 ## Functions
 
 - [ExternalLink](functions/ExternalLink.md)

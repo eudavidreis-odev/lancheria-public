@@ -6,10 +6,8 @@
 
 # app/tabs/cart
 
-Re-export do módulo de `cart` para estruturar as rotas em /tabs.
+Tela de carrinho de compras: lista itens do `CartContext` e ações de checkout.
 
-## References
+## Functions
 
-### default
-
-Re-exports [default](../../cart/functions/default.md)
+- [default](functions/default.md)

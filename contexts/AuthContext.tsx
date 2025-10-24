@@ -16,7 +16,7 @@ export type AppUser = FirebaseAuthTypes.User | null;
 /**
  * Valor exposto pelo {@link AuthProvider}. 
  */
-interface AuthContextValue {
+export interface AuthContextValue {
     user: AppUser;
     initializing: boolean;
     signOut: () => Promise<void>;

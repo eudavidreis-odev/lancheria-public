@@ -10,7 +10,7 @@
 
 Defined in: [contexts/CartContext.tsx:116](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/contexts/CartContext.tsx#L116)
 
-Hook de acesso ao CartContext. Lança erro se usado fora do `CartProvider`.
+Hook de acesso ao [CartContext](../variables/CartContext.md). Lança erro se usado fora do `CartProvider`.
 
 ## Returns
 

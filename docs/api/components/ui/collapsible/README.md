@@ -6,6 +6,10 @@
 
 # components/ui/collapsible
 
+## Type Aliases
+
+- [CollapsibleProps](type-aliases/CollapsibleProps.md)
+
 ## Functions
 
 - [Collapsible](functions/Collapsible.md)

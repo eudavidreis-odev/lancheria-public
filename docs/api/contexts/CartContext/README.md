@@ -14,6 +14,10 @@ operações para adicionar, atualizar, remover e limpar, além do total calculad
 - [CartContextValue](type-aliases/CartContextValue.md)
 - [CartItem](type-aliases/CartItem.md)
 
+## Variables
+
+- [CartContext](variables/CartContext.md)
+
 ## Functions
 
 - [CartProvider](functions/CartProvider.md)

@@ -14,7 +14,7 @@ Defined in: [components/parallax-scroll-view.tsx:27](https://github.com/eudavidr
 
 ### \_\_namedParameters
 
-`Props`
+[`Props`](../type-aliases/Props.md)
 
 ## Returns
 

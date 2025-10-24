@@ -45,11 +45,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="magnifyingglass" color={color} />,
         }}
       />
-      {/* Hide legacy orders route if present */}
-      <Tabs.Screen
-        name="orders"
-        options={{ href: null }}
-      />
+      {/* "orders" dentro de profile/orders; tela duplicada em tabs removida */}
       <Tabs.Screen
         name="cart"
         options={{

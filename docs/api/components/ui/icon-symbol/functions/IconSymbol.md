@@ -6,38 +6,36 @@
 
 # Function: IconSymbol()
 
-> **IconSymbol**(`__namedParameters`): `Element`
+> **IconSymbol**(`props`): `Element`
 
-Defined in: [components/ui/icon-symbol.tsx:32](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/components/ui/icon-symbol.tsx#L32)
+Defined in: [components/ui/icon-symbol.tsx:74](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/components/ui/icon-symbol.tsx#L74)
 
-An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
-This ensures a consistent look across platforms, and optimal resource usage.
-Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
+Cross-platform icon component.
+
+On iOS this project prefers native SF Symbols. On Android and web we
+render a visually-similar icon from Material Icons using the `MAPPING`
+table above. If no mapping exists the component falls back to
+`help-outline`.
 
 ## Parameters
 
-### \_\_namedParameters
+### props
 
-#### color
-
-`string` \| `OpaqueColorValue`
-
-#### name
-
-`SFSymbols6_0`
-
-#### size?
-
-`number` = `24`
-
-#### style?
-
-`StyleProp`\<`TextStyle`\>
-
-#### weight?
-
-`SymbolWeight`
+[`IconSymbolProps`](../type-aliases/IconSymbolProps.md)
 
 ## Returns
 
 `Element`
+
+## Remarks
+
+Keep `MAPPING` updated when you introduce new SF Symbols that must
+appear on non-iOS platforms. Prefer SF Symbols names for the `name`
+prop across the codebase so designers/developers can reference a
+single canonical identifier.
+
+## Example
+
+```ts
+<IconSymbol name="cart.fill" color="#fff" size={20} />
+```

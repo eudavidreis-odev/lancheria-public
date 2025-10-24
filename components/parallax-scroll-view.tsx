@@ -19,7 +19,7 @@ import { layout } from '@/styles/layout';
 
 const HEADER_HEIGHT = 250;
 
-type Props = PropsWithChildren<{
+export type Props = PropsWithChildren<{
   headerImage: ReactElement;
   headerBackgroundColor: { dark: string; light: string };
 }>;

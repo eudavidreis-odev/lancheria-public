@@ -167,7 +167,7 @@ export async function getProductById(id: string): Promise<Product | null> {
 
 // Atualiza/define o campo category nos produtos existentes
 /**
- * Atualiza a categoria de todos os produtos existentes a partir da heurística {@link determineCategory}.
+ * Atualiza a categoria de todos os produtos existentes a partir da heurística (a função internal `determineCategory`).
  * @returns Quantidades de registros atualizados, ignorados e erros.
  */
 export async function updateProductsCategory(): Promise<{ updated: number; skipped: number; errors: number }> {

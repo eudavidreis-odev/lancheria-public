@@ -10,7 +10,7 @@
 
 Defined in: [services/products.ts:173](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/services/products.ts#L173)
 
-Atualiza a categoria de todos os produtos existentes a partir da heurística determineCategory.
+Atualiza a categoria de todos os produtos existentes a partir da heurística (a função internal `determineCategory`).
 
 ## Returns
 

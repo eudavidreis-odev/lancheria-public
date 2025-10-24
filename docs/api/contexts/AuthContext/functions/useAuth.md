@@ -6,10 +6,10 @@
 
 # Function: useAuth()
 
-> **useAuth**(): `AuthContextValue`
+> **useAuth**(): [`AuthContextValue`](../interfaces/AuthContextValue.md)
 
 Defined in: [contexts/AuthContext.tsx:27](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/contexts/AuthContext.tsx#L27)
 
 ## Returns
 
-`AuthContextValue`
+[`AuthContextValue`](../interfaces/AuthContextValue.md)

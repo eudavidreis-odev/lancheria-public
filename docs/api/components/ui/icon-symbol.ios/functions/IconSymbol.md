@@ -8,7 +8,7 @@
 
 > **IconSymbol**(`__namedParameters`): `Element`
 
-Defined in: [components/ui/icon-symbol.ios.tsx:17](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/components/ui/icon-symbol.ios.tsx#L17)
+Defined in: [components/ui/icon-symbol.ios.tsx:12](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/components/ui/icon-symbol.ios.tsx#L12)
 
 Renderiza um símbolo nativo (SF Symbol) em iOS.
 

@@ -32,7 +32,7 @@ export type CartContextValue = {
     total: number;
 };
 
-const CartContext = React.createContext<CartContextValue | undefined>(undefined);
+export const CartContext = React.createContext<CartContextValue | undefined>(undefined);
 
 /**
  * Provider do carrinho. Inicializa estado a partir do `AsyncStorage` e o mantém sincronizado.

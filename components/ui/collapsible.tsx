@@ -12,11 +12,25 @@ import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 /**
- * Renderiza um bloco colapsável.
- * @param props.title Título exibido na barra de cabeçalho.
- * @param props.children Conteúdo renderizado quando aberto.
+ * Propriedades do componente `Collapsible`.
  */
-export function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
+export type CollapsibleProps = PropsWithChildren<{
+  /** Título exibido no cabeçalho clicável. */
+  title: string;
+}>;
+
+/**
+ * Renderiza um bloco colapsável com cabeçalho e conteúdo.
+ *
+ * - Ao tocar no cabeçalho, alterna a visibilidade do conteúdo.
+ * - Usa `IconSymbol` com rotação para indicar estado aberto/fechado.
+ *
+ * @example
+ * <Collapsible title="Detalhes">
+ *   <ThemedText>Conteúdo interno</ThemedText>
+ * </Collapsible>
+ */
+export function Collapsible({ children, title }: CollapsibleProps) {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useColorScheme() ?? 'light';
 
