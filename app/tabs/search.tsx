@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * Tela de busca/controlo de listagem de produtos. Usa `subscribeProducts` para listar
+ * produtos do Firestore quando disponível.
+ */
 import { isRNFirebaseAvailable } from '@/config/firebaseConfig';
 import { Product, subscribeProducts } from '@/services/products';
 import { layout } from '@/styles/layout';
@@ -6,22 +11,72 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { SectionList, View } from 'react-native';
-import { Card, Text, TextInput, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Card, Text, TextInput, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type ProductItem = Product;
 
+/**
+ * Componente da tela de busca. Fornece pesquisa por nome e renderização por seção.
+ */
 export default function SearchScreen() {
     const router = useRouter();
     const theme = useTheme();
     const insets = useSafeAreaInsets();
     const [products, setProducts] = React.useState<ProductItem[]>([]);
-    // estados de loading removidos; não há ações de escrita nesta tela
+    const [loading, setLoading] = React.useState(true);
+    // Cache em memória para evitar renders desnecessários
+    const cacheRef = React.useRef<Map<string, ProductItem>>(new Map());
     const [query, setQuery] = React.useState('');
 
     React.useEffect(() => {
-        const unsub = subscribeProducts(setProducts);
+        const unsub = subscribeProducts((incoming) => {
+            // Primeira chegada de dados encerra o loading
+            setLoading(false);
+
+            // Reconciliação: reaproveita referências iguais quando dados não mudaram
+            const prevMap = cacheRef.current;
+            const nextMap = new Map<string, ProductItem>();
+
+            const shallowEqual = (a?: ProductItem, b?: ProductItem) => {
+                if (!a || !b) return false;
+                return (
+                    a.id === b.id &&
+                    a.name === b.name &&
+                    a.description === b.description &&
+                    a.price === b.price &&
+                    a.assetKey === b.assetKey &&
+                    a.imageBase64 === b.imageBase64 &&
+                    a.imageMime === b.imageMime &&
+                    a.category === b.category
+                );
+            };
+
+            const reconciled: ProductItem[] = incoming.map((it) => {
+                const prev = prevMap.get(it.id);
+                if (shallowEqual(prev, it)) {
+                    nextMap.set(it.id, prev!);
+                    return prev!;
+                }
+                nextMap.set(it.id, it);
+                return it;
+            });
+
+            // Atualiza cache
+            cacheRef.current = nextMap;
+
+            // Evita setState se a lista referencialmente não mudou
+            if (
+                reconciled.length === products.length &&
+                reconciled.every((item, idx) => item === products[idx])
+            ) {
+                return;
+            }
+            setProducts(reconciled);
+        });
         return () => unsub();
+        // products no deps: usamos comparação manual acima
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Botão de salvar imagens removido
@@ -91,10 +146,16 @@ export default function SearchScreen() {
                 value={query}
                 onChangeText={setQuery}
                 style={{ marginBottom: layout.gapMd }}
+                right={loading ? <TextInput.Icon icon="progress-clock" /> : undefined}
             />
             {/* Botão de salvar imagens removido */}
 
-            {(!isDevBuild && products.length === 0) ? (
+            {loading && products.length === 0 ? (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <ActivityIndicator />
+                    <Text style={{ opacity: 0.8, marginTop: layout.gapSm }}>Carregando produtos...</Text>
+                </View>
+            ) : (!isDevBuild && products.length === 0) ? (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ opacity: 0.8, textAlign: 'center' }}>
                         Visualização de produtos requer um Development Build com Firebase configurado.

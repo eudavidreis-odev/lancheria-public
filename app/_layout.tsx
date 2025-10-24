@@ -1,3 +1,7 @@
+/**
+ * @packageDocumentation
+ * Layout raiz da aplicação. Envolve providers de Auth, Cart e Paper.
+ */
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -14,6 +18,9 @@ export const unstable_settings = {
   anchor: 'tabs',
 };
 
+/**
+ * Root layout que provê providers globais (Auth, Cart, Paper) e o ThemeProvider.
+ */
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 

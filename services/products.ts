@@ -1,7 +1,15 @@
+/**
+ * @packageDocumentation
+ * Serviços para produtos: seed, assinatura em tempo real e consultas.
+ * Integra-se ao Firebase Firestore quando disponível (Development Build).
+ */
 import productsSeeds from '@/assets/images/products/manifest';
 import { getFirestore, isRNFirebaseAvailable, serverTimestamp } from '@/config/firebaseConfig';
 import Constants from 'expo-constants';
 
+/**
+ * Estrutura de um produto publicado.
+ */
 export type Product = {
     id: string;
     name: string;
@@ -14,6 +22,9 @@ export type Product = {
     createdAt?: any;
 };
 
+/**
+ * Resolve o MIME type a partir da extensão do arquivo.
+ */
 const contentTypeFrom = (filename: string) => {
     const ext = filename.split('.').pop()?.toLowerCase();
     switch (ext) {
@@ -29,6 +40,11 @@ const contentTypeFrom = (filename: string) => {
     }
 };
 
+/**
+ * Obtém URL de download do Storage com retentativas para contornar latências/propagação.
+ * @param ref Referência do arquivo no Storage.
+ * @param retries Número de tentativas.
+ */
 export const getUrlWithRetry = async (ref: any, retries = 5) => {
     let lastErr: any;
     for (let i = 0; i < retries; i++) {
@@ -48,6 +64,9 @@ export const getUrlWithRetry = async (ref: any, retries = 5) => {
 };
 
 // Determina categoria por assetKey ou por nome
+/**
+ * Determina categoria do produto a partir do nome/asset.
+ */
 function determineCategory(name?: string, assetKey?: string): 'comida' | 'bebida' {
     const beverages = new Set(['refri_lata', 'refri_2l', 'suco_natural']);
     if (assetKey && beverages.has(assetKey)) return 'bebida';
@@ -57,11 +76,18 @@ function determineCategory(name?: string, assetKey?: string): 'comida' | 'bebida
 }
 
 // Upload desabilitado por requisição: vamos usar imagens locais
+/**
+ * Upload desabilitado: retorna caminho simbólico compatível sem efetuar upload real.
+ */
 export async function uploadAssetToStorage(_assetModule: any, filename: string): Promise<string> {
     // Retorna um caminho simbólico apenas para compat, mas não faz upload
     return `products/${filename}`;
 }
 
+/**
+ * Insere produtos de teste no Firestore a partir do manifesto de assets locais.
+ * Requer Development Build (não roda no Expo Go).
+ */
 export async function seedProductsFromAssets(): Promise<void> {
     if (!isRNFirebaseAvailable() || Constants.appOwnership === 'expo') {
         throw new Error('Requer Development Build para gerar produtos.');
@@ -81,6 +107,10 @@ export async function seedProductsFromAssets(): Promise<void> {
     }
 }
 
+/**
+ * Assina a coleção `products` no Firestore, ordenada por `createdAt` desc.
+ * @returns Função para cancelar a assinatura.
+ */
 export function subscribeProducts(onChange: (products: Product[]) => void): () => void {
     if (!isRNFirebaseAvailable() || Constants.appOwnership === 'expo') {
         onChange([]);
@@ -111,6 +141,9 @@ export function subscribeProducts(onChange: (products: Product[]) => void): () =
     return () => sub();
 }
 // Busca um produto por ID
+/**
+ * Recupera um único produto pelo ID.
+ */
 export async function getProductById(id: string): Promise<Product | null> {
     if (!isRNFirebaseAvailable() || Constants.appOwnership === 'expo') return null;
     const db = (getFirestore() as any)();
@@ -133,6 +166,10 @@ export async function getProductById(id: string): Promise<Product | null> {
 // embedImagesBase64ForExistingProducts removida conforme solicitação
 
 // Atualiza/define o campo category nos produtos existentes
+/**
+ * Atualiza a categoria de todos os produtos existentes a partir da heurística {@link determineCategory}.
+ * @returns Quantidades de registros atualizados, ignorados e erros.
+ */
 export async function updateProductsCategory(): Promise<{ updated: number; skipped: number; errors: number }> {
     if (!isRNFirebaseAvailable() || Constants.appOwnership === 'expo') {
         throw new Error('Requer Development Build para atualizar categorias.');

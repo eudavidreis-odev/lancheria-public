@@ -1,7 +1,15 @@
+/**
+ * @packageDocumentation
+ * Contexto de carrinho. Gerencia itens persistidos em `AsyncStorage` e expõe
+ * operações para adicionar, atualizar, remover e limpar, além do total calculado.
+ */
 import type { Product } from '@/services/products';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 
+/**
+ * Item de carrinho persistido localmente.
+ */
 export type CartItem = {
     productId: string;
     name: string;
@@ -12,6 +20,9 @@ export type CartItem = {
     observations?: string;
 };
 
+/**
+ * Valor exposto pelo {@link CartProvider}.
+ */
 export type CartContextValue = {
     items: CartItem[];
     addItem: (product: Product, quantity: number, observations?: string) => void;
@@ -23,6 +34,9 @@ export type CartContextValue = {
 
 const CartContext = React.createContext<CartContextValue | undefined>(undefined);
 
+/**
+ * Provider do carrinho. Inicializa estado a partir do `AsyncStorage` e o mantém sincronizado.
+ */
 export function CartProvider({ children }: { children: React.ReactNode }) {
     const [items, setItems] = React.useState<CartItem[]>([]);
     const STORAGE_KEY = 'cart:v1';
@@ -45,6 +59,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(items)).catch(() => { });
     }, [items]);
 
+    /**
+     * Adiciona um item ao carrinho. Se já existir, soma a quantidade.
+     */
     const addItem = React.useCallback((product: Product, quantity: number, observations?: string) => {
         if (quantity <= 0) return;
         setItems((prev) => {
@@ -69,16 +86,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         });
     }, []);
 
+    /** Atualiza a quantidade de um item do carrinho. */
     const updateQuantity = React.useCallback((productId: string, quantity: number) => {
         setItems((prev) => prev.map((i) => (i.productId === productId ? { ...i, quantity } : i)));
     }, []);
 
+    /** Remove um item do carrinho. */
     const removeItem = React.useCallback((productId: string) => {
         setItems((prev) => prev.filter((i) => i.productId !== productId));
     }, []);
 
+    /** Esvazia o carrinho. */
     const clear = React.useCallback(() => setItems([]), []);
 
+    /** Total calculado do carrinho. */
     const total = React.useMemo(() => items.reduce((sum, i) => sum + i.price * i.quantity, 0), [items]);
 
     const value = React.useMemo(
@@ -89,6 +110,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
+/**
+ * Hook de acesso ao {@link CartContext}. Lança erro se usado fora do `CartProvider`.
+ */
 export function useCart() {
     const ctx = React.useContext(CartContext);
     if (!ctx) throw new Error('useCart must be used within CartProvider');

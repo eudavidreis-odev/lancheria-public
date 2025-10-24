@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * Componente `ParallaxScrollView` que exibe um cabeçalho com efeito parallax
+ * e o conteúdo principal abaixo. Utiliza `react-native-reanimated` para animações.
+ */
 import type { PropsWithChildren, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, {

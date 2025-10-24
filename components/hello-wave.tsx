@@ -1,5 +1,10 @@
+/**
+ * @packageDocumentation
+ * Pequeno componente visual que exibe um emoji com leve animação (usado como saudação).
+ */
 import Animated from 'react-native-reanimated';
 
+/** Renderiza um "wave" animado com emoji. */
 export function HelloWave() {
   return (
     <Animated.Text

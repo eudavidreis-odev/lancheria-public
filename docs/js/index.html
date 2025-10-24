@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Lancheria – Expo + Firebase</h1>
+<p>App de hamburgueria construído com Expo Router e Firebase (Auth, Firestore e Storage).</p>
+<h2>Como começar</h2>
+<ol>
+<li>
+<p>Install dependencies</p>
+<pre class="prettyprint source lang-bash"><code>npm install
+</code></pre>
+</li>
+<li>
+<p>Start the app</p>
+<pre class="prettyprint source lang-bash"><code>npx expo start
+</code></pre>
+</li>
+</ol>
+<p>No output do CLI você poderá abrir em:</p>
+<ul>
+<li><a href="https://docs.expo.dev/develop/development-builds/introduction/">Development build</a></li>
+<li><a href="https://docs.expo.dev/workflow/android-studio-emulator/">Emulador Android</a></li>
+<li><a href="https://docs.expo.dev/workflow/ios-simulator/">Simulador iOS</a></li>
+<li><a href="https://expo.dev/go">Expo Go</a> (limitado, não suporta react-native-firebase)</li>
+</ul>
+<p>O roteamento é baseado em arquivos via <strong>Expo Router</strong> dentro de <code>app/</code>.</p>
+<blockquote>
+<p>Observação: react-native-firebase requer um Development Build (não funciona no Expo Go). Gere um dev client com EAS ou <code>expo run:[android|ios]</code>.</p>
+</blockquote>
+<h3>Passos de configuração do Firebase</h3>
+<ol>
+<li>No <a href="https://console.firebase.google.com/">console do Firebase</a>, crie o projeto (ex.: <code>LancheriaApp</code>).</li>
+<li>Adicione apps Android/iOS (ex.: pacote <code>com.seudominio.lancheria</code>).</li>
+<li>Baixe os arquivos de configuração e coloque na raiz do projeto:
+<ul>
+<li><code>google-services.json</code> (Android)</li>
+<li><code>GoogleService-Info.plist</code> (iOS)</li>
+</ul>
+</li>
+<li>Ative serviços:
+<ul>
+<li>Authentication (Google/Apple, Anônimo para &quot;Modo Convidado&quot;)</li>
+<li>Firestore Database (modo de produção)</li>
+<li>Storage</li>
+</ul>
+</li>
+<li>Rode um build de desenvolvimento:</li>
+</ol>
+<pre class="prettyprint source lang-bash"><code>npx expo prebuild
+npx expo run:android   # ou
+npx expo run:ios
+</code></pre>
+<blockquote>
+<p>Dica: depois do prebuild, use EAS para gerar dev clients.</p>
+</blockquote>
+<h2>Resetar projeto exemplo</h2>
+<p>When you're ready, run:</p>
+<pre class="prettyprint source lang-bash"><code>npm run reset-project
+</code></pre>
+<p>This command will move the starter code to the <strong>app-example</strong> directory and create a blank <strong>app</strong> directory where you can start developing.</p>
+<h2>Aprenda mais</h2>
+<p>To learn more about developing your project with Expo, look at the following resources:</p>
+<ul>
+<li><a href="https://docs.expo.dev/">Documentação Expo</a></li>
+<li><a href="https://docs.expo.dev/tutorial/introduction/">Tutorial Expo</a></li>
+</ul>
+<h2>Estrutura e pontos principais</h2>
+<ul>
+<li><code>config/firebaseConfig.ts</code>: instâncias <code>firebaseAuth</code>, <code>db</code>, <code>firebaseStorage</code>.</li>
+<li><code>styles/theme.ts</code>: design system (cores, espaçamentos, tipografia).</li>
+<li><code>utils/responsive.ts</code>: util de responsividade (<code>vw</code>, <code>vh</code>, <code>fontScale</code>).</li>
+<li><code>app/tabs/*</code>: abas Busca, Carrinho de compras e Perfil.</li>
+</ul>
+<h2>Diretrizes de idioma</h2>
+<ul>
+<li>Itens exibidos no app (textos de UI, rótulos, títulos, mensagens) devem estar sempre em PT-BR.</li>
+<li>Criação de arquivos (nomes de arquivos, nomes de funções/classes) e criação de itens no banco de dados (nomes de coleções, campos, chaves) devem ser em inglês.</li>
+<li>Toda a documentação do projeto (README, guias, comentários de documentação) deve ser feita em PT-BR.</li>
+</ul>
+<h2>Próximos passos (roadmap)</h2>
+<ul>
+<li>Onboarding + Modo Convidado (Auth anônimo)</li>
+<li>Login Social (Google/Apple) com Firebase Auth</li>
+<li>Cardápio do Firestore + imagens no Storage</li>
+<li>Personalização de produto com preço dinâmico</li>
+<li>Checkout e Pedidos com atualização em tempo real</li>
+<li>Notificações push (FCM)</li>
+</ul>
+<h2>Join the community</h2>
+<p>Join our community of developers creating universal apps.</p>
+<ul>
+<li><a href="https://github.com/expo/expo">Expo on GitHub</a>: View our open source platform and contribute.</li>
+<li><a href="https://chat.expo.dev">Discord community</a>: Chat with Expo users and ask questions.</li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#fs">fs</a></li><li><a href="global.html#moveDirectories">moveDirectories</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Oct 24 2025 12:47:45 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

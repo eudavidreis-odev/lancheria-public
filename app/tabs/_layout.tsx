@@ -1,3 +1,7 @@
+/**
+ * @packageDocumentation
+ * Layout das tabs: define ícones, badges e comportamento da barra de navegação.
+ */
 import { Tabs } from 'expo-router';
 import React from 'react';
 
@@ -8,6 +12,9 @@ import { useCart } from '@/contexts/CartContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Text as RNText, View } from 'react-native';
 
+/**
+ * Componente que monta as Tabs principais e mostra badge de itens no carrinho.
+ */
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { items } = useCart();

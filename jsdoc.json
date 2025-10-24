@@ -1,0 +1,15 @@
+{
+    "source": {
+        "include": [
+            "scripts"
+        ],
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(^|\\/)_(?!)"
+    },
+    "opts": {
+        "destination": "docs/js",
+        "recurse": true,
+        "readme": "README.md"
+    },
+    "plugins": []
+}

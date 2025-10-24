@@ -1,6 +1,13 @@
+/**
+ * @packageDocumentation
+ * Tela de pedidos dentro das tabs. Requer autenticação para exibir histórico.
+ */
 import { useAuth } from '@/contexts/AuthContext';
 import { Text, View } from 'react-native';
 
+/**
+ * Componente de pedidos dentro das tabs. Mostra mensagem para usuários não autenticados.
+ */
 export default function OrdersScreen() {
     const { user } = useAuth();
     if (!user) {

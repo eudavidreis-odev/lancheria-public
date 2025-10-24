@@ -1,13 +1,20 @@
+/**
+ * Texto tematizado com variantes de estilo e suporte a cores claras/escuras.
+ */
 import { StyleSheet, Text, type TextProps } from 'react-native';
 
 import { useThemeColor } from '@/hooks/use-theme-color';
 
+/** Propriedades do componente {@link ThemedText}. */
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
 };
 
+/**
+ * Renderiza um elemento de texto com estilo consistente ao tema.
+ */
 export function ThemedText({
   style,
   lightColor,

@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * Tela de autenticação com múltiplos métodos (Google, e-mail/senha, telefone e anônimo).
+ * Muitos fluxos dependem de um Development Build com Firebase nativo disponível.
+ */
 import { getAuth, getAuthInstance, isRNFirebaseAvailable } from '@/config/firebaseConfig';
 import { layout } from '@/styles/layout';
 import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
@@ -11,6 +16,9 @@ import { Button, Dialog, Divider, Portal, SegmentedButtons, Text, TextInput, use
 
 WebBrowser.maybeCompleteAuthSession();
 
+/**
+ * Componente da tela de login. Provê UI para métodos suportados e modais de cadastro/recuperação.
+ */
 export default function LoginScreen() {
     const theme = useTheme();
     const [loading, setLoading] = useState<'google' | 'guest' | 'email' | 'email-signup' | 'email-reset' | 'phone-send' | 'phone-confirm' | null>(null);

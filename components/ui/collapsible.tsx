@@ -1,3 +1,7 @@
+/**
+ * Componente colapsável simples com título e conteúdo.
+ * Alterna a visibilidade ao toque no cabeçalho.
+ */
 import { PropsWithChildren, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
@@ -7,6 +11,11 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
+/**
+ * Renderiza um bloco colapsável.
+ * @param props.title Título exibido na barra de cabeçalho.
+ * @param props.children Conteúdo renderizado quando aberto.
+ */
 export function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useColorScheme() ?? 'light';

@@ -45,6 +45,11 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
+/**
+ * Move ou apaga diretórios antigos e recria estrutura básica do app.
+ * @param {"y"|"n"} userInput "y" para mover para /app-example, "n" para apagar.
+ * @returns {Promise<void>}
+ */
 const moveDirectories = async (userInput) => {
   try {
     if (userInput === "y") {
@@ -87,10 +92,9 @@ const moveDirectories = async (userInput) => {
 
     console.log("\n✅ Project reset complete. Next steps:");
     console.log(
-      `1. Run \`npx expo start\` to start a development server.\n2. Edit app/index.tsx to edit the main screen.${
-        userInput === "y"
-          ? `\n3. Delete the /${exampleDir} directory when you're done referencing it.`
-          : ""
+      `1. Run \`npx expo start\` to start a development server.\n2. Edit app/index.tsx to edit the main screen.${userInput === "y"
+        ? `\n3. Delete the /${exampleDir} directory when you're done referencing it.`
+        : ""
       }`
     );
   } catch (error) {

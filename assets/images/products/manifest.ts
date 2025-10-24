@@ -1,6 +1,10 @@
-// Manifesto de produtos de teste usando assets locais
-// Para adicionar mais, importe o arquivo e inclua um item no array default export.
+/**
+ * @packageDocumentation
+ * Manifesto de produtos de teste usando assets locais.
+ * Para adicionar mais, importe o arquivo e inclua um item no array.
+ */
 
+/** Estrutura de um item de seed de produto. */
 export type ProductSeed = {
     key: string; // usado como id do documento e nome do arquivo no Storage
     name: string;
@@ -10,6 +14,7 @@ export type ProductSeed = {
     filename: string; // nome do arquivo no Storage (ex.: hamburguer.jpg)
 };
 
+/** Lista de produtos de demonstração. */
 export const productsSeeds: ProductSeed[] = [
     {
         key: 'hamburguer',

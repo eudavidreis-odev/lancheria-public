@@ -1,0 +1,29 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "entryPoints": [
+        "app",
+        "components",
+        "config",
+        "constants",
+        "contexts",
+        "services",
+        "styles",
+        "utils"
+    ],
+    "entryPointStrategy": "expand",
+    "tsconfig": "tsconfig.json",
+    "plugin": [
+        "typedoc-plugin-markdown"
+    ],
+    "out": "docs/api",
+    "readme": "none",
+    "excludeExternals": true,
+    "hideGenerator": true,
+    "categorizeByGroup": true,
+    "gitRevision": "documentacao_inicial",
+    "sort": [
+        "kind",
+        "alphabetical"
+    ],
+    "includeVersion": true
+}

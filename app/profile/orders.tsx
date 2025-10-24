@@ -1,9 +1,16 @@
+/**
+ * @packageDocumentation
+ * Tela de pedidos do usuário (placeholder informativo).
+ */
 import { layout } from '@/styles/layout';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 
+/**
+ * Componente que mostra a tela "Meus pedidos" (atualmente informativa).
+ */
 export default function OrdersScreen() {
     return (
         <>

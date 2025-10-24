@@ -1,3 +1,7 @@
+/**
+ * @packageDocumentation
+ * Tela de carrinho de compras: lista itens do `CartContext` e ações de checkout.
+ */
 import { useCart } from '@/contexts/CartContext';
 import { layout } from '@/styles/layout';
 import { Image } from 'expo-image';
@@ -6,6 +10,9 @@ import React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Card, Text, useTheme } from 'react-native-paper';
 
+/**
+ * Componente de tela do Carrinho.
+ */
 export default function CartScreen() {
     const { items, total, updateQuantity, removeItem, clear } = useCart();
     const theme = useTheme();

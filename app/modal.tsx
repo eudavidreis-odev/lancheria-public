@@ -1,3 +1,7 @@
+/**
+ * @packageDocumentation
+ * Tela de modal genérica usada pela navegação do app.
+ */
 import { Link } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
@@ -5,6 +9,9 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { layout } from '@/styles/layout';
 
+/**
+ * Componente simples que renderiza o conteúdo do modal padrão.
+ */
 export default function ModalScreen() {
   return (
     <ThemedView style={styles.container}>

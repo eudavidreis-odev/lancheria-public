@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * Tela de detalhe de produto. Permite ajustar quantidade, adicionar observações e
+ * incluir o produto no carrinho via `CartContext`.
+ */
 import { useCart } from '@/contexts/CartContext';
 import { getProductById, Product } from '@/services/products';
 import { layout } from '@/styles/layout';
@@ -7,6 +12,9 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button, Card, Text, TextInput, useTheme } from 'react-native-paper';
 
+/**
+ * Componente de detalhe do produto identificado por `id` na rota.
+ */
 export default function ProductDetailScreen() {
     const { id } = useLocalSearchParams<{ id: string }>();
     const theme = useTheme();
