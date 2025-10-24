@@ -1,4 +1,5 @@
 import { getAuth, getAuthInstance, isRNFirebaseAvailable } from '@/config/firebaseConfig';
+import { layout } from '@/styles/layout';
 import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { makeRedirectUri } from 'expo-auth-session';
 import * as Google from 'expo-auth-session/providers/google';
@@ -509,9 +510,9 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 24,
+        paddingHorizontal: layout.screenPadding,
         paddingTop: 48,
-        paddingBottom: 24,
+        paddingBottom: layout.screenPadding,
         // Layout em duas regiões: topo flexível e base fixa
     },
     topContent: {
