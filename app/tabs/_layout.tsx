@@ -46,7 +46,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="cart"
         options={{
-          title: 'Carrinho de compras',
+          title: 'Carrinho',
           tabBarIcon: ({ color }) => withBadge(<IconSymbol size={28} name="cart.fill" color={color} />),
         }}
       />
