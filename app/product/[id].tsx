@@ -54,7 +54,7 @@ export default function ProductDetailScreen() {
 
     const addToCart = () => {
         addItem(product, quantity, notes.trim() || undefined);
-        router.replace('/cart');
+        router.replace('/tabs/cart');
     };
 
     return (

@@ -7,7 +7,7 @@ import { layout } from '@/styles/layout';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Image, ScrollView, View } from 'react-native';
-import { Avatar, List, Text } from 'react-native-paper';
+import { Avatar, Divider, List, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /**
@@ -57,6 +57,13 @@ export default function ProfileScreen() {
 
             <List.Section>
                 <List.Subheader>Conta</List.Subheader>
+                <List.Item
+                    title="Meus pedidos"
+                    description="Acompanhe seu histórico"
+                    left={(p) => <List.Icon {...p} icon="clipboard-list-outline" />}
+                    onPress={() => router.push({ pathname: '/profile/orders' })}
+                />
+                <Divider />
                 <List.Item
                     title="Sair"
                     description="Encerrar sessão"
