@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
+import { CartProvider } from '@/contexts/CartContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { paperDarkTheme, paperLightTheme } from '@/styles/paperTheme';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -17,12 +18,14 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <PaperProvider theme={colorScheme === 'dark' ? paperDarkTheme : paperLightTheme}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <RootNavigator />
-          <StatusBar style="auto" />
-        </ThemeProvider>
-      </PaperProvider>
+      <CartProvider>
+        <PaperProvider theme={colorScheme === 'dark' ? paperDarkTheme : paperLightTheme}>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <RootNavigator />
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </PaperProvider>
+      </CartProvider>
     </AuthProvider>
   );
 }

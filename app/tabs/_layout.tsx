@@ -4,10 +4,25 @@ import React from 'react';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
+import { useCart } from '@/contexts/CartContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Text as RNText, View } from 'react-native';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { items } = useCart();
+  const count = items.reduce((sum, i) => sum + i.quantity, 0);
+
+  const withBadge = (icon: React.ReactNode) => (
+    <View>
+      {icon}
+      {count > 0 && (
+        <View style={{ position: 'absolute', top: -2, right: -6, backgroundColor: 'tomato', borderRadius: 8, paddingHorizontal: 4, minWidth: 16, height: 16, alignItems: 'center', justifyContent: 'center' }}>
+          <RNText style={{ color: 'white', fontSize: 10, fontWeight: '700' }}>{count}</RNText>
+        </View>
+      )}
+    </View>
+  );
 
   return (
     <Tabs
@@ -27,7 +42,7 @@ export default function TabLayout() {
         name="orders"
         options={{
           title: 'Pedidos',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="cart.fill" color={color} />,
+          tabBarIcon: ({ color }) => withBadge(<IconSymbol size={28} name="cart.fill" color={color} />),
         }}
       />
       <Tabs.Screen
