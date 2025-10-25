@@ -1,8 +1,13 @@
 /**
  * @packageDocumentation
- * Tela de busca/controlo de listagem de produtos. Usa `subscribeProducts` para listar
- * produtos do Firestore quando disponível.
+ * Tela de busca/controle de listagem de produtos.
+ *
+ * @remarks
+ * - Usa `subscribeProducts` para listar produtos do Firestore (quando disponível).
+ * - Quando houver itens no carrinho, exibe um FAB no canto superior direito com badge.
+ *   O FAB respeita `insets.top` e mantém offset visual consistente com outras telas.
  */
+import FloatingCartButton from '@/components/ui/FloatingCartButton';
 import { isRNFirebaseAvailable } from '@/config/firebaseConfig';
 import { useCart } from '@/contexts/CartContext';
 import { Product, subscribeProducts } from '@/services/products';
@@ -12,7 +17,7 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { SectionList, View } from 'react-native';
-import { ActivityIndicator, Badge, Card, IconButton, Text, TextInput, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Card, Text, TextInput, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type ProductItem = Product;
@@ -141,66 +146,60 @@ export default function SearchScreen() {
     const totalItems = React.useMemo(() => items.reduce((sum, i) => sum + i.quantity, 0), [items]);
 
     return (
-        <View style={{ flex: 1, paddingHorizontal: layout.searchPadding, paddingBottom: layout.searchPadding, paddingTop: insets.top + layout.searchPadding }}>
+        <View style={{ flex: 1 }}>
             {totalItems > 0 && (
-                <View style={{ position: 'absolute', top: insets.top + 96, right: 16, zIndex: 10 }}>
-                    <View style={{ position: 'relative' }}>
-                        <IconButton
-                            icon="cart"
-                            size={28}
-                            mode="contained"
-                            onPress={() => router.push('/tabs/cart')}
-                            accessibilityLabel="Abrir carrinho"
-                            style={{ elevation: 6, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 6, shadowOffset: { width: 0, height: 4 } }}
-                        />
-                        <Badge style={{ position: 'absolute', top: -4, right: -4 }} size={18}>
-                            {totalItems}
-                        </Badge>
-                    </View>
-                </View>
-            )}
-            {/* Campo de busca por nome */}
-            <TextInput
-                mode="outlined"
-                placeholder="Buscar por nome"
-                left={<TextInput.Icon icon="magnify" />}
-                value={query}
-                onChangeText={setQuery}
-                style={{ marginBottom: layout.gapMd }}
-                right={loading ? <TextInput.Icon icon="progress-clock" /> : undefined}
-            />
-            {/* Botão de salvar imagens removido */}
-
-            {loading && products.length === 0 ? (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <ActivityIndicator />
-                    <Text style={{ opacity: 0.8, marginTop: layout.gapSm }}>Carregando produtos...</Text>
-                </View>
-            ) : (!isDevBuild && products.length === 0) ? (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ opacity: 0.8, textAlign: 'center' }}>
-                        Visualização de produtos requer um Development Build com Firebase configurado.
-                    </Text>
-                </View>
-            ) : (
-                <SectionList
-                    sections={sections}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => renderItem({ item })}
-                    renderSectionHeader={({ section }) => (
-                        <Text variant="titleMedium" style={{ marginTop: layout.gapMd, marginBottom: 6, fontWeight: '700' }}>
-                            {section.title}
-                        </Text>
-                    )}
-                    stickySectionHeadersEnabled={false}
-                    contentContainerStyle={{ paddingBottom: layout.gapLg }}
-                    ListEmptyComponent={
-                        <View style={{ flex: 1, alignItems: 'center', marginTop: 48 }}>
-                            <Text style={{ opacity: 0.8 }}>Nenhum produto cadastrado.</Text>
-                        </View>
-                    }
+                <FloatingCartButton
+                    top={insets.top + 96}
+                    right={16}
+                    count={totalItems}
+                    onPress={() => router.push('/tabs/cart')}
+                    persistKey="floatingCart.global"
                 />
             )}
+            <View style={{ flex: 1, paddingHorizontal: layout.searchPadding, paddingBottom: layout.searchPadding, paddingTop: insets.top + layout.searchPadding }}>
+                {/* Campo de busca por nome */}
+                <TextInput
+                    mode="outlined"
+                    placeholder="Buscar por nome"
+                    left={<TextInput.Icon icon="magnify" />}
+                    value={query}
+                    onChangeText={setQuery}
+                    style={{ marginBottom: layout.gapMd }}
+                    right={loading ? <TextInput.Icon icon="progress-clock" /> : undefined}
+                />
+                {/* Botão de salvar imagens removido */}
+
+                {loading && products.length === 0 ? (
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <ActivityIndicator />
+                        <Text style={{ opacity: 0.8, marginTop: layout.gapSm }}>Carregando produtos...</Text>
+                    </View>
+                ) : (!isDevBuild && products.length === 0) ? (
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ opacity: 0.8, textAlign: 'center' }}>
+                            Visualização de produtos requer um Development Build com Firebase configurado.
+                        </Text>
+                    </View>
+                ) : (
+                    <SectionList
+                        sections={sections}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => renderItem({ item })}
+                        renderSectionHeader={({ section }) => (
+                            <Text variant="titleMedium" style={{ marginTop: layout.gapMd, marginBottom: 6, fontWeight: '700' }}>
+                                {section.title}
+                            </Text>
+                        )}
+                        stickySectionHeadersEnabled={false}
+                        contentContainerStyle={{ paddingBottom: layout.gapLg }}
+                        ListEmptyComponent={
+                            <View style={{ flex: 1, alignItems: 'center', marginTop: 48 }}>
+                                <Text style={{ opacity: 0.8 }}>Nenhum produto cadastrado.</Text>
+                            </View>
+                        }
+                    />
+                )}
+            </View>
         </View>
     );
 }

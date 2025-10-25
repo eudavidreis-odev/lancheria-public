@@ -23,6 +23,7 @@
 - [components/themed-text](components/themed-text/README.md)
 - [components/themed-view](components/themed-view/README.md)
 - [components/ui/collapsible](components/ui/collapsible/README.md)
+- [components/ui/FloatingCartButton](components/ui/FloatingCartButton/README.md)
 - [components/ui/icon-symbol](components/ui/icon-symbol/README.md)
 - [components/ui/icon-symbol.ios](components/ui/icon-symbol.ios/README.md)
 - [config/firebaseConfig](config/firebaseConfig/README.md)

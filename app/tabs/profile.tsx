@@ -1,5 +1,7 @@
 /**
- * Tela de Perfil. Se não houver usuário autenticado, renderiza a tela de Login.
+ * @packageDocumentation
+ * Tela de Perfil: exibe informações do usuário autenticado e ações de conta.
+ * Se não houver usuário autenticado, renderiza a tela de Login.
  */
 import LoginScreen from '@/app/auth/login';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,7 +13,10 @@ import { Avatar, Divider, List, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /**
- * Componente de tela de Perfil exibindo informações básicas e ações de conta.
+ * Componente da tela de Perfil.
+ * - Mostra avatar, nome e e-mail do usuário autenticado
+ * - Lista ações como "Meus pedidos" e "Sair"
+ * - Quando não autenticado, renderiza a tela de Login
  */
 export default function ProfileScreen() {
     const { user, signOut } = useAuth();

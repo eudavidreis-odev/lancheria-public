@@ -8,7 +8,7 @@
 
 > **default**(): `Element`
 
-Defined in: [app/product/\[id\].tsx:19](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/app/product/[id].tsx#L19)
+Defined in: [app/product/\[id\].tsx:26](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/app/product/[id].tsx#L26)
 
 Componente de detalhe do produto identificado por `id` na rota.
 
