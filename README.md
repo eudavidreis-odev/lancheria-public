@@ -93,3 +93,47 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+## Segurança ao publicar um fork
+
+Se pretende publicar este repositório publicamente, siga as recomendações abaixo para evitar vazar credenciais e ficheiros sensíveis.
+
+- Crie um arquivo `.env` local a partir de `.env.example` e preencha as variáveis; não comite o `.env`.
+- Não comite os ficheiros nativos do Firebase (`google-services.json` e `GoogleService-Info.plist`) nem keystores; eles estão adicionados em `.gitignore`.
+- Se já cometeu esses ficheiros no passado, rotacione as chaves e remova os ficheiros do histórico Git (ver passos abaixo).
+
+Remover ficheiros sensíveis do histórico (resumo):
+
+1) Usando BFG (recomendado):
+
+    - Clone o repositório como mirror:
+
+       git clone --mirror git@github.com:SEU_USUARIO/SEU_REPO.git
+
+    - Use o BFG para apagar os ficheiros:
+
+       bfg --delete-files google-services.json --delete-files GoogleService-Info.plist
+
+    - Finalize e force-push:
+
+       cd SEU_REPO.git
+       git reflog expire --expire=now --all && git gc --prune=now --aggressive
+       git push --force
+
+2) Usando git filter-repo (alternativa):
+
+       git clone --no-local --no-hardlinks path/to/repo.git
+       git filter-repo --invert-paths --paths google-services.json --paths GoogleService-Info.plist
+
+Após limpar o histórico: rotacione todas as chaves/API keys no painel do provedor (Firebase console, Google Cloud, etc.).
+
+Verificação rápida por chaves públicas (local):
+
+      git grep -n "AIza" || true
+
+Se encontrar chaves, considere-as comprometidas e rotacione imediatamente.
+
+Integração segura em CI/CD:
+
+- Use os Secrets do GitHub / GitLab (ou variáveis de ambiente do EAS/Expo) para injectar credenciais em builds sem as versionar.
+- Para EAS, pode usar `eas secret` ou variáveis de ambiente no painel.
