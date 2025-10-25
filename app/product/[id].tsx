@@ -12,9 +12,9 @@ import FloatingCartButton from '@/components/ui/FloatingCartButton';
 import { useCart } from '@/contexts/CartContext';
 import { getProductById, Product } from '@/services/products';
 import { layout } from '@/styles/layout';
-import { useHeaderHeight } from '@react-navigation/elements';
 import { Image } from 'expo-image';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useIsFocused } from '@react-navigation/native';
 import React from 'react';
 import { View } from 'react-native';
 import { Button, Card, Text, TextInput, useTheme } from 'react-native-paper';
@@ -29,11 +29,12 @@ export default function ProductDetailScreen() {
     const router = useRouter();
     const { addItem, items } = useCart();
     const insets = useSafeAreaInsets();
+    const isFocused = useIsFocused();
     const [product, setProduct] = React.useState<Product | null>(null);
     const [qty, setQty] = React.useState('1');
     const [notes, setNotes] = React.useState('');
     const [loading, setLoading] = React.useState(true);
-    const headerHeight = useHeaderHeight();
+    // Não usamos a altura do header para posicionar o FAB no modo "global" (screen)
 
     React.useEffect(() => {
         let mounted = true;
@@ -93,13 +94,16 @@ export default function ProductDetailScreen() {
     return (
         <View style={{ flex: 1 }}>
             <Stack.Screen options={{ title: `${categoryLabel}/${product.name}` }} />
-            {totalItems > 0 && (
+            {isFocused && totalItems > 0 && (
                 <FloatingCartButton
-                    top={Math.max(0, insets.top + 96 - headerHeight)}
+                    top={insets.top + 96}
                     right={16}
                     count={totalItems}
                     onPress={() => router.push('/tabs/cart')}
                     persistKey="floatingCart.global"
+                    visibleTop={insets.top}
+                    insets={{ top: insets.top, bottom: insets.bottom, left: 0, right: 0 }}
+                    anchorMode="screen"
                 />
             )}
             <View style={{ flex: 1, padding: layout.screenPadding }}>

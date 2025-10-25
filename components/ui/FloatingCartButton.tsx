@@ -9,12 +9,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import { Animated, Dimensions, PanResponder, View } from 'react-native';
-import { Badge, IconButton } from 'react-native-paper';
+import { Badge, IconButton, Portal } from 'react-native-paper';
 
 export type FloatingCartButtonProps = {
-    /** Offset inicial do topo (px). Geralmente `insets.top + 96` (ou subtraindo headerHeight). */
+    /** Offset absoluto alvo do topo (px) ao ancorar em TOP. Idealmente visibleTop + marginTop. */
     top: number;
-    /** Offset inicial da direita (px). Geralmente `16`. */
+    /** Offset de margem da direita (px) ao ancorar em RIGHT. Ex.: 16. */
     right: number;
     /** Quantidade total do carrinho para exibir no badge. */
     count: number;
@@ -22,18 +22,40 @@ export type FloatingCartButtonProps = {
     onPress: () => void;
     /** Chave para persistir posição entre telas/sessões. Se omitido, não persiste. */
     persistKey?: string;
+    /** Topo visível do conteúdo (safe-area + header, se existir). Ex.: insets.top ou insets.top + headerHeight. */
+    visibleTop: number;
+    /** Insets seguros da tela (safe-area). */
+    insets: { top: number; bottom: number; left: number; right: number };
+    /**
+     * Modo de ancoragem vertical do FAB:
+     * - 'screen' (padrão): relativo ao topo físico da tela (safe-area), ignora header.
+     * - 'content': relativo ao topo visível do conteúdo (safe-area + header, etc.).
+     */
+    anchorMode?: 'screen' | 'content';
+    /** Quando true, monta o FAB dentro de um Portal para ancorar à janela inteira. */
+    usePortal?: boolean;
 };
 
-type PersistedPos = { left: number; top: number };
+type PersistedState = { corner: 'tl' | 'tr' | 'bl' | 'br' };
 
-export function FloatingCartButton({ top, right, count, onPress, persistKey }: FloatingCartButtonProps) {
+export function FloatingCartButton({ top, right, count, onPress, persistKey, visibleTop, insets, anchorMode = 'screen', usePortal = true }: FloatingCartButtonProps) {
     const window = Dimensions.get('window');
     const [btnSize, setBtnSize] = React.useState<{ w: number; h: number }>({ w: 0, h: 0 });
-    const [basePos, setBasePos] = React.useState<{ left: number; top: number }>({ left: 0, top: top });
+    const [basePos, setBasePos] = React.useState<{ left: number; top: number }>({ left: 0, top });
     const translate = React.useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
     const startTouch = React.useRef<{ x: number; y: number } | null>(null);
+    // Helper para obter o topo de referência conforme ancoragem
+    const getTopEdgeBase = React.useCallback(() => (anchorMode === 'screen' ? insets.top : visibleTop), [anchorMode, insets.top, visibleTop]);
+    // Margens desejadas relativamente às bordas: topMargin = top - topEdgeBase; rightMargin = right
+    const topMarginRef = React.useRef<number>(0);
+    const rightMarginRef = React.useRef<number>(Math.max(0, right));
+    const defaultCorner: PersistedState['corner'] = 'tr';
 
-    // Carrega posição persistida (se houver)
+    // Carrega posição persistida (se houver) e aplica com margens atuais/visíveis
+    React.useEffect(() => {
+        topMarginRef.current = Math.max(0, top - getTopEdgeBase());
+    }, [top, getTopEdgeBase]);
+
     React.useEffect(() => {
         let mounted = true;
         (async () => {
@@ -41,31 +63,54 @@ export function FloatingCartButton({ top, right, count, onPress, persistKey }: F
             try {
                 const raw = await AsyncStorage.getItem(persistKey);
                 if (raw && mounted) {
-                    const p: PersistedPos = JSON.parse(raw);
-                    setBasePos({ left: p.left, top: p.top });
+                    const p: PersistedState = JSON.parse(raw);
+                    const applied = computeCornerPosition(p.corner);
+                    setBasePos(applied);
                     translate.setValue({ x: 0, y: 0 });
                 }
             } catch { }
         })();
         return () => { mounted = false; };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [persistKey]);
+    }, [persistKey, btnSize.w, btnSize.h, visibleTop, insets.top, insets.right, insets.bottom, window.width, window.height, anchorMode]);
 
-    // Quando tamanho do botão for conhecido pela primeira vez, calcula base a partir de right
+    // Quando tamanho do botão for conhecido, calcula base padrão (top-right) se ainda não houver posição
     React.useEffect(() => {
         if (btnSize.w > 0) {
-            const left = Math.max(0, window.width - right - btnSize.w);
-            setBasePos((prev) => ({ left: prev.left || left, top }));
+            const left = Math.max(0, window.width - insets.right - rightMarginRef.current - btnSize.w);
+            const topEdgeBase = getTopEdgeBase();
+            setBasePos((prev) => ({ left: prev.left || left, top: prev.top || topEdgeBase + topMarginRef.current }));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [btnSize.w, top, right, window.width]);
+    }, [btnSize.w, visibleTop, insets.right, window.width, getTopEdgeBase]);
 
-    const savePosition = async (absLeft: number, absTop: number) => {
+    const savePosition = async (corner: PersistedState['corner']) => {
         if (!persistKey) return;
         try {
-            await AsyncStorage.setItem(persistKey, JSON.stringify({ left: absLeft, top: absTop } satisfies PersistedPos));
+            await AsyncStorage.setItem(persistKey, JSON.stringify({ corner } satisfies PersistedState));
         } catch { }
     };
+
+    // Dada a corner, calcula posição absoluta usando margens e zonas seguras
+    function computeCornerPosition(corner: PersistedState['corner']): { left: number; top: number } {
+        const leftEdge = insets.left;
+        const rightEdge = window.width - insets.right - btnSize.w;
+        const topEdge = getTopEdgeBase();
+        const bottomEdge = window.height - insets.bottom - btnSize.h;
+        const marginV = topMarginRef.current;
+        const marginH = rightMarginRef.current;
+        switch (corner) {
+            case 'tl':
+                return { left: leftEdge + marginH, top: topEdge + marginV };
+            case 'tr':
+                return { left: rightEdge - marginH, top: topEdge + marginV };
+            case 'bl':
+                return { left: leftEdge + marginH, top: bottomEdge - marginV };
+            case 'br':
+            default:
+                return { left: rightEdge - marginH, top: bottomEdge - marginV };
+        }
+    }
 
     const panResponder = React.useMemo(
         () =>
@@ -88,31 +133,87 @@ export function FloatingCartButton({ top, right, count, onPress, persistKey }: F
                         ? Math.abs(evt.nativeEvent.pageX - st.x) + Math.abs(evt.nativeEvent.pageY - st.y) > 8
                         : Math.abs(totalX) + Math.abs(totalY) > 8;
 
+                    // Clique: não anima snap, apenas executa ação e volta para base
+                    if (!movedEnough) {
+                        Animated.spring(translate, {
+                            toValue: { x: 0, y: 0 },
+                            useNativeDriver: false,
+                            damping: 20,
+                            stiffness: 200,
+                            mass: 1,
+                            overshootClamping: true,
+                        }).start();
+                        onPress();
+                        return;
+                    }
+
                     const absLeft = basePos.left + totalX;
                     const absTop = basePos.top + totalY;
 
-                    // Limita aos limites da tela
-                    const clampedLeft = Math.min(Math.max(0, absLeft), Math.max(0, window.width - btnSize.w));
-                    const clampedTop = Math.min(Math.max(0, absTop), Math.max(0, window.height - btnSize.h));
+                    // Edges visuais considerando safe-area e header
+                    const leftEdge = insets.left;
+                    const rightEdge = window.width - insets.right - btnSize.w;
+                    const topEdge = getTopEdgeBase();
+                    const bottomEdge = window.height - insets.bottom - btnSize.h;
 
-                    // Reposiciona base e zera translate
-                    setBasePos({ left: clampedLeft, top: clampedTop });
-                    translate.setValue({ x: 0, y: 0 });
+                    // Candidatos de cantos com margens fixas
+                    const marginV = topMarginRef.current;
+                    const marginH = rightMarginRef.current;
+                    const corners = {
+                        tl: { left: leftEdge + marginH, top: topEdge + marginV },
+                        tr: { left: rightEdge - marginH, top: topEdge + marginV },
+                        bl: { left: leftEdge + marginH, top: bottomEdge - marginV },
+                        br: { left: rightEdge - marginH, top: bottomEdge - marginV },
+                    } as const;
 
-                    // Persiste
-                    savePosition(clampedLeft, clampedTop);
+                    // Escolhe canto mais próximo pela distância euclidiana; empates preferem direita e topo
+                    type K = keyof typeof corners;
+                    const dist = (p: { left: number; top: number }) => {
+                        const dx = absLeft - p.left;
+                        const dy = absTop - p.top;
+                        return Math.hypot(dx, dy);
+                    };
+                    const entries = Object.entries(corners) as Array<[K, { left: number; top: number }]>;
+                    entries.sort((a, b) => {
+                        const da = dist(a[1]);
+                        const db = dist(b[1]);
+                        if (da === db) {
+                            // preferir direita (tr/br) e depois topo (tr/tl)
+                            const pref = (k: K) => (k.endsWith('r') ? 0 : 1) + (k.startsWith('t') ? 0 : 2);
+                            return pref(a[0]) - pref(b[0]);
+                        }
+                        return da - db;
+                    });
+                    const chosen: K = entries[0][0];
+                    const pos = corners[chosen];
 
-                    // Clique se não arrastou de verdade
-                    if (!movedEnough) {
-                        onPress();
-                    }
+                    // Anima suavemente até o canto escolhido
+                    const targetX = pos.left - basePos.left;
+                    const targetY = pos.top - basePos.top;
+                    Animated.spring(translate, {
+                        toValue: { x: targetX, y: targetY },
+                        useNativeDriver: false,
+                        damping: 20,
+                        stiffness: 200,
+                        mass: 1,
+                        overshootClamping: true,
+                    }).start(() => {
+                        // Após animação, fixa base e zera translate
+                        setBasePos({ left: pos.left, top: pos.top });
+                        translate.setValue({ x: 0, y: 0 });
+                    });
+
+                    // Persiste canto
+                    savePosition(chosen);
+
+                    // Clique já tratado acima quando !movedEnough
                 },
             }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [basePos.left, basePos.top, btnSize.w, btnSize.h, onPress]
     );
 
-    return (
+    const content = (
         <View
             // Wrapper absoluto na posição base calculada
             style={{ position: 'absolute', left: basePos.left, top: basePos.top, zIndex: 10 }}
@@ -132,7 +233,7 @@ export function FloatingCartButton({ top, right, count, onPress, persistKey }: F
                         mode="contained"
                         accessibilityLabel="Abrir carrinho"
                         // sombra / elevação
-                        style={{ elevation: 6, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 6, shadowOffset: { width: 0, height: 4 } }}
+                        style={{ elevation: 6, margin: 0, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 6, shadowOffset: { width: 0, height: 4 } }}
                     />
                     {count > 0 && (
                         <Badge style={{ position: 'absolute', top: -4, right: -4 }} size={18}>
@@ -143,6 +244,10 @@ export function FloatingCartButton({ top, right, count, onPress, persistKey }: F
             </Animated.View>
         </View>
     );
+    if (usePortal) {
+        return <Portal>{content}</Portal>;
+    }
+    return content;
 }
 
 export default FloatingCartButton;

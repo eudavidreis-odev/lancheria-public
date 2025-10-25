@@ -17,6 +17,7 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { SectionList, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { ActivityIndicator, Card, Text, TextInput, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -29,6 +30,7 @@ export default function SearchScreen() {
     const router = useRouter();
     const theme = useTheme();
     const insets = useSafeAreaInsets();
+    const isFocused = useIsFocused();
     const { items } = useCart();
     const [products, setProducts] = React.useState<ProductItem[]>([]);
     const [loading, setLoading] = React.useState(true);
@@ -147,13 +149,16 @@ export default function SearchScreen() {
 
     return (
         <View style={{ flex: 1 }}>
-            {totalItems > 0 && (
+            {isFocused && totalItems > 0 && (
                 <FloatingCartButton
                     top={insets.top + 96}
                     right={16}
                     count={totalItems}
                     onPress={() => router.push('/tabs/cart')}
                     persistKey="floatingCart.global"
+                    visibleTop={insets.top}
+                    insets={{ top: insets.top, bottom: insets.bottom, left: 0, right: 0 }}
+                    anchorMode="screen"
                 />
             )}
             <View style={{ flex: 1, paddingHorizontal: layout.searchPadding, paddingBottom: layout.searchPadding, paddingTop: insets.top + layout.searchPadding }}>

@@ -8,7 +8,7 @@
 
 > **FloatingCartButton**(`__namedParameters`): `Element`
 
-Defined in: components/ui/FloatingCartButton.tsx:29
+Defined in: [components/ui/FloatingCartButton.tsx:33](https://github.com/eudavidreis-odev/lancheria/blob/documentacao_inicial/components/ui/FloatingCartButton.tsx#L33)
 
 ## Parameters
 
