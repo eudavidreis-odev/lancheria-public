@@ -12,12 +12,12 @@ import { isRNFirebaseAvailable } from '@/config/firebaseConfig';
 import { useCart } from '@/contexts/CartContext';
 import { Product, subscribeProducts } from '@/services/products';
 import { layout } from '@/styles/layout';
+import { useIsFocused } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { SectionList, View } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 import { ActivityIndicator, Card, Text, TextInput, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
