@@ -1,139 +1,59 @@
-# Lancheria – Expo + Firebase
+# Lancheria
 
-App de hamburgueria construído com Expo Router e Firebase (Auth, Firestore e Storage).
+Uma aplicação de exemplo (Expo + React Native + Firebase) criada como projeto de portfólio.
 
-## Como começar
+Este repositório é uma versão pública e limpa do projeto — sensíveis (como `google-services.json`, `GoogleService-Info.plist` e keystores) foram removidos do histórico desta branch e não estão presentes aqui.
 
-1. Install dependencies
+## Visão geral
 
-   ```bash
-   npm install
-   ```
+- Stack: React Native (Expo), Expo Router, TypeScript
+- Backend: Firebase (Auth, Firestore, Storage) — configurações privadas removidas antes de publicar
+- Objetivo: demonstrar arquitetura de app mobile universal, telas de busca, carrinho e perfil, integração com Firebase e boas práticas de configuração para builds.
 
-2. Start the app
+## Principais features
 
-   ```bash
-   npx expo start
-   ```
+- Roteamento baseado em arquivos com Expo Router
+- Autenticação (Firebase Auth — arquitetura pronta para Social Login)
+- Catálogo de produtos com imagens (Firestore + Storage)
+- Carrinho de compras com persistência local
+- Estrutura modular e pronta para produção (separação `app/`, `components/`, `services/`, `config/`)
 
-No output do CLI você poderá abrir em:
+## Executando localmente (desenvolvimento)
 
-- [Development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Emulador Android](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [Simulador iOS](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go) (limitado, não suporta react-native-firebase)
-
-O roteamento é baseado em arquivos via **Expo Router** dentro de `app/`.
-
-> Observação: react-native-firebase requer um Development Build (não funciona no Expo Go). Gere um dev client com EAS ou `expo run:[android|ios]`.
-
-### Passos de configuração do Firebase
-
-1. No [console do Firebase](https://console.firebase.google.com/), crie o projeto (ex.: `LancheriaApp`).
-2. Adicione apps Android/iOS (ex.: pacote `com.seudominio.lancheria`).
-3. Baixe os arquivos de configuração e coloque na raiz do projeto:
-   - `google-services.json` (Android)
-   - `GoogleService-Info.plist` (iOS)
-4. Ative serviços:
-   - Authentication (Google/Apple, Anônimo para "Modo Convidado")
-   - Firestore Database (modo de produção)
-   - Storage
-5. Rode um build de desenvolvimento:
+1. Instale dependências
 
 ```bash
-npx expo prebuild
-npx expo run:android   # ou
-npx expo run:ios
+npm install
+# ou
+# yarn
 ```
 
-> Dica: depois do prebuild, use EAS para gerar dev clients.
+2. Crie um arquivo `.env` a partir de `.env.example` e preencha as variáveis necessárias (este repo não contém seus ficheiros de configuração do Firebase)
 
-## Resetar projeto exemplo
-
-When you're ready, run:
+3. Inicie o Metro / Expo
 
 ```bash
-npm run reset-project
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Observação: Para usar `@react-native-firebase/*` (nativos) você precisará de um Development Build (EAS) ou executar `expo prebuild` e usar `expo run:android|ios`.
 
-## Aprenda mais
+## Estrutura relevante
 
-To learn more about developing your project with Expo, look at the following resources:
+- `app/` — telas e roteamento
+- `components/` — componentes reutilizáveis
+- `config/firebaseConfig.ts` — fachada para integração com RN Firebase (usa módulos nativos)
+- `docs/` — documentação interna
 
-- [Documentação Expo](https://docs.expo.dev/)
-- [Tutorial Expo](https://docs.expo.dev/tutorial/introduction/)
+## Segurança e nota sobre chaves
 
-## Estrutura e pontos principais
+Este repositório foi criado especificamente para exposição pública. Todas as referências a chaves e ficheiros sensíveis foram removidas desta branch. Se quiser executar builds nativos com Firebase, gere suas próprias credenciais no Console do Firebase e use variáveis de ambiente ou os mecanismos de secret do serviço de CI (GitHub Secrets / EAS secrets).
 
-- `config/firebaseConfig.ts`: instâncias `firebaseAuth`, `db`, `firebaseStorage`.
-- `styles/theme.ts`: design system (cores, espaçamentos, tipografia).
-- `utils/responsive.ts`: util de responsividade (`vw`, `vh`, `fontScale`).
-- `app/tabs/*`: abas Busca, Carrinho de compras e Perfil.
+## Licença
 
-## Diretrizes de idioma
+MIT — sinta-se à vontade para clonar e estudar o código.
 
-- Itens exibidos no app (textos de UI, rótulos, títulos, mensagens) devem estar sempre em PT-BR.
-- Criação de arquivos (nomes de arquivos, nomes de funções/classes) e criação de itens no banco de dados (nomes de coleções, campos, chaves) devem ser em inglês.
-- Toda a documentação do projeto (README, guias, comentários de documentação) deve ser feita em PT-BR.
+## Contato
 
-## Próximos passos (roadmap)
+Se quiser falar sobre este projeto (demonstração, dúvidas técnicas ou oportunidades), abra uma issue ou contacte via perfil do GitHub.
 
-- Onboarding + Modo Convidado (Auth anônimo)
-- Login Social (Google/Apple) com Firebase Auth
-- Cardápio do Firestore + imagens no Storage
-- Personalização de produto com preço dinâmico
-- Checkout e Pedidos com atualização em tempo real
-- Notificações push (FCM)
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-
-## Segurança ao publicar um fork
-
-Se pretende publicar este repositório publicamente, siga as recomendações abaixo para evitar vazar credenciais e ficheiros sensíveis.
-
-- Crie um arquivo `.env` local a partir de `.env.example` e preencha as variáveis; não comite o `.env`.
-- Não comite os ficheiros nativos do Firebase (`google-services.json` e `GoogleService-Info.plist`) nem keystores; eles estão adicionados em `.gitignore`.
-- Se já cometeu esses ficheiros no passado, rotacione as chaves e remova os ficheiros do histórico Git (ver passos abaixo).
-
-Remover ficheiros sensíveis do histórico (resumo):
-
-1) Usando BFG (recomendado):
-
-    - Clone o repositório como mirror:
-
-       git clone --mirror git@github.com:SEU_USUARIO/SEU_REPO.git
-
-    - Use o BFG para apagar os ficheiros:
-
-       bfg --delete-files google-services.json --delete-files GoogleService-Info.plist
-
-    - Finalize e force-push:
-
-       cd SEU_REPO.git
-       git reflog expire --expire=now --all && git gc --prune=now --aggressive
-       git push --force
-
-2) Usando git filter-repo (alternativa):
-
-       git clone --no-local --no-hardlinks path/to/repo.git
-       git filter-repo --invert-paths --paths google-services.json --paths GoogleService-Info.plist
-
-Após limpar o histórico: rotacione todas as chaves/API keys no painel do provedor (Firebase console, Google Cloud, etc.).
-
-Verificação rápida por chaves públicas (local):
-
-      git grep -n "AIza" || true
-
-Se encontrar chaves, considere-as comprometidas e rotacione imediatamente.
-
-Integração segura em CI/CD:
-
-- Use os Secrets do GitHub / GitLab (ou variáveis de ambiente do EAS/Expo) para injectar credenciais em builds sem as versionar.
-- Para EAS, pode usar `eas secret` ou variáveis de ambiente no painel.
